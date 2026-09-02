@@ -2,6 +2,7 @@
 using Movie.Core.Contracts;
 using Movie.Core.Dtos;
 using Movie.Core.Entities;
+using Movie.Core.Exceptions;
 
 namespace Movie.Services.Services;
 
@@ -33,7 +34,7 @@ public class ReviewService : IReviewService
         var movieExists = await _unitOfWork.Movies.ExistsAsync(movieId);
         if (!movieExists)
         {
-            throw new InvalidOperationException($"Ingen film med id {movieId} finnes.");
+            throw new NotFoundException($"No movie with id {movieId} was found.");
         }
 
         var review = new Review

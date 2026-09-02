@@ -1,6 +1,7 @@
 ﻿using Movie.Contracts.Services;
 using Movie.Core.Contracts;
 using Movie.Core.Dtos;
+using Movie.Core.Exceptions;
 
 namespace Movie.Services.Services;
 
@@ -32,7 +33,7 @@ public class MovieService : IMovieService
         var titleTaken = await _unitOfWork.Movies.ExistsByTitleAsync(dto.Title);
         if (titleTaken)
         {
-            throw new InvalidOperationException($"En film med navnet '{dto.Title}' finnes allerede.");
+            throw new BusinessRuleException($"A movie with the title '{dto.Title}' already exists.");
         }
 
         var movie = new Movie.Core.Entities.Movie
@@ -65,7 +66,7 @@ public class MovieService : IMovieService
 
         if (titleTakenByOther)
         {
-            throw new InvalidOperationException($"En film med navnet '{dto.Title}' finnes allerede.");
+            throw new BusinessRuleException($"A movie with the title '{dto.Title}' already exists.");
         }
 
         movie.Title = dto.Title;

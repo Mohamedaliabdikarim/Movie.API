@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Movie.API.Middleware;
 using Movie.Contracts.Services;
 using Movie.Core.Contracts;
 using Movie.Data.Data;
@@ -21,7 +22,12 @@ builder.Services.AddDbContext<MovieContext>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
